@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">AccountShoppingList</string>
+    <string-array name="tag_list">
+        <item>Food</item>
+        <item>Drink</item>
+        <item>Cookware</item>
+        <item>Meat</item>
+        <item>Other</item>
+
+    </string-array>
 </resources>
