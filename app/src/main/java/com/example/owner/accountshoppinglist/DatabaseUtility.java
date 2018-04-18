@@ -72,6 +72,19 @@ public class DatabaseUtility {
         db.delete(TABLE_NAME,KEY_SHOPPINGITEM_ID+"= ?",new String[]{""+s.getId()});
 
     }
+    public static ArrayList<String> selectAllName(SQLiteDatabase db){
+        ArrayList<String> result=new ArrayList<>();
+        Cursor c= db.query(TABLE_NAME,null,null,null,null,null,null);
+        if(c!=null){
+            c.moveToNext();
+            while(!c.isAfterLast()){
+                String p=createFromCursor(c).getName();
+                result.add(p);
+                c.moveToNext();
+            }
+        }
+        return result;
+    }
     public static ArrayList<ShoppingItem> selectAll(SQLiteDatabase db){
         ArrayList<ShoppingItem> results=new ArrayList<ShoppingItem>();
         Cursor c= db.query(TABLE_NAME,null,null,null,null,null,null);

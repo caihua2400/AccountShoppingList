@@ -13,12 +13,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class AddItemActivity extends AppCompatActivity {
@@ -34,7 +38,8 @@ public class AddItemActivity extends AppCompatActivity {
     static final int REQUEST_SHARE_IMAGE = 2;
     String mCurrentPhotoPath;
     String tag="";
-
+    private static ArrayList<String> nameList;
+    private static ArrayList<String> findNameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +47,24 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item);
         ShoppingItemDatabase dbConnection = new ShoppingItemDatabase(this);
         db = dbConnection.openDatabase();
+        nameList=DatabaseUtility.selectAllName(db);
+        findNameList=new ArrayList<String>();
         final EditText mName = findViewById(R.id.mName);
         final EditText mPrice = findViewById(R.id.mPrice);
         final EditText mQuantity = findViewById(R.id.mQuantity);
         Button button_create = findViewById(R.id.button_create);
-        final TextView mTag=findViewById(R.id.text_tag);
-        Spinner spinner = findViewById(R.id.spinner_tag);
-        Button button_Take_photo=findViewById(R.id.button_take_photo);
-        final String[] spinner_items = getResources().getStringArray(R.array.tag_list);
-        ArrayAdapter<String> arrayAdapter_spinner = new ArrayAdapter<String>(AddItemActivity.this, android.R.layout.simple_list_item_1, spinner_items);
-        spinner.setAdapter(arrayAdapter_spinner);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        final ListView name_list_view=findViewById(R.id.name_list);
+        final SearchView name_search=findViewById(R.id.searchView_nameList);
+        final Spinner spinner_tag=findViewById(R.id.spinner_tag);
+        final ArrayAdapter<String> spinner_adapter=
+                new ArrayAdapter<String>(AddItemActivity.this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.tag_list));
+        spinner_tag.setAdapter(spinner_adapter);
+        spinner_tag.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    tag=spinner_items[i];
-                    mTag.setText(tag);
+                 String[] spin_items=getResources().getStringArray(R.array.tag_list);
+                 tag=spin_items[i];
+                 Toast.makeText(AddItemActivity.this,"tagged successful",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -65,6 +72,13 @@ public class AddItemActivity extends AppCompatActivity {
 
             }
         });
+        final ArrayAdapter<String> name_adapter=new ArrayAdapter<String>(AddItemActivity.this,android.R.layout.simple_list_item_1,nameList);
+        name_list_view.setAdapter(name_adapter);
+
+        Button button_Take_photo=findViewById(R.id.button_take_photo);
+
+
+
 
         button_Take_photo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +92,7 @@ public class AddItemActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ShoppingItem p=new ShoppingItem();
                 p.setName(mName.getText().toString());
-                p.setTag(mTag.getText().toString());
+                p.setTag(tag);
                 p.setPath(mCurrentPhotoPath);
                 p.setPrice(Integer.parseInt(mPrice.getText().toString()) );
                 p.setQuantity(Integer.parseInt(mQuantity.getText().toString()));
@@ -88,6 +102,68 @@ public class AddItemActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        name_search.setSubmitButtonEnabled(true);
+        name_search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if(TextUtils.isEmpty(s)){
+                    Toast.makeText(AddItemActivity.this,"please input name to filter",Toast.LENGTH_SHORT).show();
+                    name_list_view.setAdapter(name_adapter);
+                }else{
+                    findNameList.clear();
+                    for(int i=0;i<nameList.size();i++){
+                        String oldName=nameList.get(i);
+                        if(oldName.toUpperCase().equals(s)){
+                            findNameList.add(s);
+                            break;
+                        }
+                    }
+                    if(findNameList.size()==0){
+                        Toast.makeText(AddItemActivity.this,"the item you search does not exist",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(AddItemActivity.this,"search successful",Toast.LENGTH_SHORT).show();
+                        ArrayAdapter<String> findNameAdapter=new ArrayAdapter<String>(AddItemActivity.this,android.R.layout.simple_list_item_1,findNameList);
+                        name_list_view.setAdapter(findNameAdapter);
+                    }
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(TextUtils.isEmpty(s)){
+                    name_list_view.setAdapter(name_adapter);
+                }else{
+                    findNameList.clear();
+                    for(int i=0;i<nameList.size();i++){
+                        String oldName=nameList.get(i);
+                        if(oldName.toUpperCase().contains(s.toUpperCase())){
+                            findNameList.add(oldName);
+                        }
+                    }
+                    ArrayAdapter<String> findNameAdapter=new ArrayAdapter<String>(AddItemActivity.this,android.R.layout.simple_list_item_1,findNameList);
+                    name_list_view.setAdapter(findNameAdapter);
+                }
+                return false;
+            }
+        });
+
+        name_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(findNameList.size()>0){
+                    String name= findNameList.get(i);
+                    mName.setText(name);
+                }else{
+                    String name=nameList.get(i);
+                    mName.setText(name);
+                }
+
+            }
+        });
+
 
     }
     private void requestToTakeAPicture()
