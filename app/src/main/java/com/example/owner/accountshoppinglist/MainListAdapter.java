@@ -1,9 +1,11 @@
 package com.example.owner.accountshoppinglist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +82,37 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
 
           setPic(imageView_wishlist,s.getPath());
 
+          Button button_delete=row.findViewById(R.id.button_delete);
+
+          button_delete.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                    DatabaseUtility.delete(databaseHandler,s);
+                    remove(s);
+                    notifyDataSetChanged();
+                    Toast.makeText(context,"delete successful",Toast.LENGTH_SHORT).show();
+              }
+          });
+
+          Button button_modify=row.findViewById(R.id.button_modify);
+          button_modify.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                  Intent intent=new Intent(context,ModifyItemActivity.class);
+                  intent.putExtra("shoppingItem",s);
+
+                  context.startActivity(intent);
+              }
+          });
+
+          Button button_purchase=row.findViewById(R.id.button_purchase);
+          button_purchase.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+
+              }
+          });
+
           return row;
     }
     private void setPic(ImageView myImageView, String path)
@@ -107,7 +142,9 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
 
 
     }
-
+    private void remove(ShoppingItem shoppingItem){
+        wishList.remove(shoppingItem);
+    }
     @NonNull
     @Override
     public Filter getFilter() {
