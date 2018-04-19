@@ -32,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button button_turnto_bought=findViewById(R.id.button_turnTo_bought);
+        button_turnto_bought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,BoughtSummaryActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ListView listView_main= findViewById(R.id.list_view_main);
         SearchView searchView_main=findViewById(R.id.search_name);
         final MainListAdapter mainListAdapter=new MainListAdapter(MainActivity.this,R.layout.shopping_item,shoppingItems,db);

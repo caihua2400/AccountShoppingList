@@ -35,6 +35,7 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
     public ArrayList<ShoppingItem> wishList;
     private Context context;
     ValueFilter valueFilter;
+
     public MainListAdapter(@NonNull Context context, int resource, @NonNull List<ShoppingItem> objects,SQLiteDatabase databaseHandler) {
 
         this.mLayoutResourceId=resource;
@@ -109,9 +110,15 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
           button_purchase.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
-
+                    DatabaseUtility.delete(databaseHandler,s);
+                    DatabaseUtility.insert_bought(databaseHandler,s);
+                    remove(s);
+                    notifyDataSetChanged();
+                    Toast.makeText(context,"purchase successful",Toast.LENGTH_SHORT).show();
               }
           });
+
+
 
           return row;
     }

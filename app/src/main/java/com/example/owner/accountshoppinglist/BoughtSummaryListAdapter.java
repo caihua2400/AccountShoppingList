@@ -1,8 +1,112 @@
 package com.example.owner.accountshoppinglist;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
 /**
  * Created by Owner on 16/04/2018.
  */
 
-public class BoughtSummaryListAdapter {
+public class BoughtSummaryListAdapter extends BaseAdapter  {
+    private int mLayoutResourceId;
+    private SQLiteDatabase databaseHandler;
+
+    private ArrayList<ShoppingItem> mFilterList;
+    private ArrayList<ShoppingItem> boughtList;
+    private Context context;
+
+    public BoughtSummaryListAdapter(Context context,int resource,ArrayList<ShoppingItem> shoppingItemArrayList,SQLiteDatabase databaseHandler){
+        this.context=context;
+        this.mLayoutResourceId=resource;
+        mFilterList=new ArrayList<ShoppingItem>(shoppingItemArrayList);
+        boughtList=new ArrayList<>(shoppingItemArrayList);
+        this.databaseHandler=databaseHandler;
+
+    }
+    @Override
+    public int getCount() {
+        return boughtList.size();
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return boughtList.get(i);
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
+
+    @Override
+    public View getView(int i, View view, ViewGroup viewGroup) {
+        LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View row=inflater.inflate(mLayoutResourceId,viewGroup,false);
+        final ShoppingItem shoppingItem=(ShoppingItem) getItem(i);
+        TextView bought_name_text= row.findViewById(R.id.text_bought_name_summary);
+        bought_name_text.setText(shoppingItem.getName());
+        TextView bought_price_text=row.findViewById(R.id.text_bought_price_summary);
+        bought_price_text.setText(shoppingItem.getPrice()+"");
+        TextView bought_quantity_text=row.findViewById(R.id.text_bought_quantity_summary);
+        bought_quantity_text.setText(shoppingItem.getQuantity()+"");
+        TextView bought_tag_text=row.findViewById(R.id.text_bought_tag_summary);
+        bought_tag_text.setText(shoppingItem.getTag());
+        ImageView bought_image=row.findViewById(R.id.image_summary_item);
+        setPic(bought_image,shoppingItem.getPath());
+
+        Button button_delete_bought=row.findViewById(R.id.button_delete_bought_summary);
+        button_delete_bought.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseUtility.delete_bought(databaseHandler,shoppingItem);
+                remove(shoppingItem);
+                notifyDataSetChanged();
+                Toast.makeText(context,"delete successful",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return row;
+    }
+    private void setPic(ImageView myImageView, String path)
+    {
+        // Get the dimensions of the View
+        int targetW = myImageView.getWidth();
+        int targetH = myImageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        //   bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
+        myImageView.setImageBitmap(bitmap);
+
+
+
+    }
+    private void remove(ShoppingItem shoppingItem){
+        boughtList.remove(shoppingItem);
+    }
 }

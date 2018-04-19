@@ -6,4 +6,91 @@
     android:layout_height="match_parent"
     tools:context="com.example.owner.accountshoppinglist.BoughtSummaryActivity">
 
+    <Button
+        android:id="@+id/button_back_to_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_to_statistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Statistics"
+        app:layout_constraintBottom_toBottomOf="@+id/button_back_to_main"
+        app:layout_constraintEnd_toStartOf="@+id/searchView_bought_list"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/button_back_to_main"
+        app:layout_constraintTop_toTopOf="@+id/button_back_to_main"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <SearchView
+        android:id="@+id/searchView_bought_list"
+        android:layout_width="146dp"
+        android:layout_height="101dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button_to_statistics"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_to_statistics" />
+
+
+    <TextView
+        android:id="@+id/text_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TotalPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_total_price"
+        app:layout_constraintEnd_toStartOf="@+id/editText_total_price"
+        app:layout_constraintTop_toTopOf="@+id/editText_total_price" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Share"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_total_price"
+        app:layout_constraintStart_toEndOf="@+id/editText_total_price"
+        app:layout_constraintTop_toTopOf="@+id/editText_total_price" />
+
+    <EditText
+        android:id="@+id/editText_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="8dp"
+
+        android:ems="10"
+        android:inputType="textPersonName"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.982" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="347dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+
+        android:layout_marginTop="92dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/list_view_bought"/>
 </android.support.constraint.ConstraintLayout>
