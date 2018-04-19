@@ -65,7 +65,7 @@
         app:layout_constraintStart_toEndOf="@+id/editText_total_price"
         app:layout_constraintTop_toTopOf="@+id/editText_total_price" />
 
-    <EditText
+    <TextView
         android:id="@+id/editText_total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         android:layout_marginTop="8dp"
 
         android:ems="10"
-        android:inputType="textPersonName"
+
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

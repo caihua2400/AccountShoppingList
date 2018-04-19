@@ -73,6 +73,7 @@ public class BoughtSummaryListAdapter extends BaseAdapter  {
                 DatabaseUtility.delete_bought(databaseHandler,shoppingItem);
                 remove(shoppingItem);
                 notifyDataSetChanged();
+
                 Toast.makeText(context,"delete successful",Toast.LENGTH_SHORT).show();
             }
         });
