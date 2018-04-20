@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,13 +21,14 @@ import java.util.ArrayList;
  * Created by Owner on 16/04/2018.
  */
 
-public class BoughtSummaryListAdapter extends BaseAdapter  {
+public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable {
     private int mLayoutResourceId;
     private SQLiteDatabase databaseHandler;
 
     private ArrayList<ShoppingItem> mFilterList;
-    private ArrayList<ShoppingItem> boughtList;
+    public ArrayList<ShoppingItem> boughtList;
     private Context context;
+    ValueFilter valueFilter;
 
     public BoughtSummaryListAdapter(Context context,int resource,ArrayList<ShoppingItem> shoppingItemArrayList,SQLiteDatabase databaseHandler){
         this.context=context;
@@ -33,6 +36,8 @@ public class BoughtSummaryListAdapter extends BaseAdapter  {
         mFilterList=new ArrayList<ShoppingItem>(shoppingItemArrayList);
         boughtList=new ArrayList<>(shoppingItemArrayList);
         this.databaseHandler=databaseHandler;
+
+
 
     }
     @Override
@@ -109,5 +114,46 @@ public class BoughtSummaryListAdapter extends BaseAdapter  {
     }
     private void remove(ShoppingItem shoppingItem){
         boughtList.remove(shoppingItem);
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (valueFilter == null) {
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
+    }
+    private class ValueFilter extends Filter{
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results=new FilterResults();
+            if(constraint !=null || constraint.length()>0){
+                ArrayList<ShoppingItem> filterList=new ArrayList<ShoppingItem>();
+                for(int i=0;i<mFilterList.size();i++){
+                    if(mFilterList.get(i).getTag().contains(constraint.toString())){
+                        ShoppingItem s=new ShoppingItem();
+                        s.setName(mFilterList.get(i).getName());
+                        s.setQuantity(mFilterList.get(i).getQuantity());
+                        s.setPrice(mFilterList.get(i).getPrice());
+                        s.setPath(mFilterList.get(i).getPath());
+                        s.setTag(mFilterList.get(i).getTag());
+                        filterList.add(s);
+                    }
+                }
+                results.count=filterList.size();
+                results.values=filterList;
+            }else{
+                results.count=mFilterList.size();
+                results.values=mFilterList;
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                boughtList=(ArrayList<ShoppingItem>) filterResults.values;
+                notifyDataSetChanged();
+        }
     }
 }
