@@ -89,9 +89,42 @@ public class BoughtSummaryActivity extends AppCompatActivity {
              }
          });
 
+        Button button_share= findViewById(R.id.button_share);
+        button_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareWhatsInTheBox();
+            }
+        });
+
+        Button button_to_statistics=findViewById(R.id.button_to_statistics);
+        button_to_statistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(BoughtSummaryActivity.this,StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
+
+    }
+    void shareWhatsInTheBox()
+    {
+        String shoppingList="";
+        for (ShoppingItem s:boughtList
+             ) {
+            shoppingList+="Name : "+s.getName()+" Price: "+s.getPrice()+" Quantity :"+s.getQuantity() +"\n";
+
+        }
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, shoppingList);
+        sendIntent.setType("text/plain");
+
+
+        startActivity(Intent.createChooser(sendIntent, "Share via..."));
     }
 
     public static void CalculateTotalPrice(ArrayList<ShoppingItem> boughtList){
