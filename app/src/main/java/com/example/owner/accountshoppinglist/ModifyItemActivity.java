@@ -1,5 +1,7 @@
 package com.example.owner.accountshoppinglist;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +36,30 @@ public class ModifyItemActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(ModifyItemActivity.this);
+                builder.setTitle("modify item");
+                builder.setNegativeButton("cancel modify", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.setPositiveButton("confirm modify", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        st.setName(edit_name.getText().toString());
+                        st.setPrice(Integer.parseInt(edit_price.getText().toString()));
+                        st.setQuantity(Integer.parseInt(edit_quantity.getText().toString()));
+                        st.setTag(edit_tag.getText().toString());
+                        DatabaseUtility.update(db,st);
+                        Toast.makeText(ModifyItemActivity.this,"update successful",Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(ModifyItemActivity.this,MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+                /*
                 st.setName(edit_name.getText().toString());
                 st.setPrice(Integer.parseInt(edit_price.getText().toString()));
                 st.setQuantity(Integer.parseInt(edit_quantity.getText().toString()));
@@ -42,6 +68,7 @@ public class ModifyItemActivity extends AppCompatActivity {
                 Toast.makeText(ModifyItemActivity.this,"update successful",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(ModifyItemActivity.this,MainActivity.class);
                 startActivity(intent);
+                */
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.owner.accountshoppinglist;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -90,6 +92,33 @@ public class AddItemActivity extends AppCompatActivity {
         button_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(AddItemActivity.this);
+                builder.setTitle("Add new Item");
+                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ShoppingItem p=new ShoppingItem();
+                        p.setName(mName.getText().toString());
+                        p.setTag(tag);
+                        p.setPath(mCurrentPhotoPath);
+                        p.setPrice(Integer.parseInt(mPrice.getText().toString()) );
+                        p.setQuantity(Integer.parseInt(mQuantity.getText().toString()));
+                        DatabaseUtility.insert(db,p);
+                        Toast.makeText(AddItemActivity.this,"create success",Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(AddItemActivity.this,MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+                /*
                 ShoppingItem p=new ShoppingItem();
                 p.setName(mName.getText().toString());
                 p.setTag(tag);
@@ -100,6 +129,7 @@ public class AddItemActivity extends AppCompatActivity {
                 Toast.makeText(AddItemActivity.this,"create success",Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(AddItemActivity.this,MainActivity.class);
                 startActivity(intent);
+                */
             }
         });
 

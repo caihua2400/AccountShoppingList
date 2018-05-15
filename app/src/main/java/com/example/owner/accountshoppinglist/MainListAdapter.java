@@ -1,6 +1,8 @@
 package com.example.owner.accountshoppinglist;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -88,10 +90,31 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
           button_delete.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
+                    AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                    builder.setTitle("confirm delete");
+                    builder.setNegativeButton("cancel delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("confirm delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            DatabaseUtility.delete(databaseHandler,s);
+                            remove(s);
+                            notifyDataSetChanged();
+                            Toast.makeText(context,"delete successful",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                  AlertDialog dialog=builder.create();
+                  dialog.show();
+                    /*
                     DatabaseUtility.delete(databaseHandler,s);
                     remove(s);
                     notifyDataSetChanged();
                     Toast.makeText(context,"delete successful",Toast.LENGTH_SHORT).show();
+                    */
               }
           });
 
@@ -110,11 +133,33 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
           button_purchase.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
+                  AlertDialog.Builder builder=new AlertDialog.Builder(context);
+                  builder.setTitle("purchase item");
+                  builder.setNegativeButton("cancel purchase", new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialogInterface, int i) {
+                          dialogInterface.cancel();
+                      }
+                  });
+                  builder.setPositiveButton("confirm purchase", new DialogInterface.OnClickListener() {
+                      @Override
+                      public void onClick(DialogInterface dialogInterface, int i) {
+                          DatabaseUtility.delete(databaseHandler,s);
+                          DatabaseUtility.insert_bought(databaseHandler,s);
+                          remove(s);
+                          notifyDataSetChanged();
+                          Toast.makeText(context,"purchase successful",Toast.LENGTH_SHORT).show();
+                      }
+                  });
+                  AlertDialog dialog=builder.create();
+                  dialog.show();
+                  /*
                     DatabaseUtility.delete(databaseHandler,s);
                     DatabaseUtility.insert_bought(databaseHandler,s);
                     remove(s);
                     notifyDataSetChanged();
                     Toast.makeText(context,"purchase successful",Toast.LENGTH_SHORT).show();
+                    */
               }
           });
 
