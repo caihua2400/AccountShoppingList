@@ -21,9 +21,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Add a new item"
+        android:background="@color/colorPrimary"
+
+        android:text="Add new item"
         app:layout_constraintBottom_toTopOf="@+id/list_view_main"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.329"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,9 +36,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="see bought List"
+        android:background="@color/colorAccent"
+        android:text="bought List"
         app:layout_constraintEnd_toStartOf="@+id/button_add"
-        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,6 +51,7 @@
         android:layout_marginStart="8dp"
         android:queryHint="name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
         app:layout_constraintStart_toEndOf="@+id/button_add"
         app:layout_constraintTop_toTopOf="parent" />
 

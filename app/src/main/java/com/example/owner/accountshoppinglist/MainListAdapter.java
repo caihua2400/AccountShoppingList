@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,13 +74,18 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
 
 
           View row= inflater.inflate(mLayoutResourceId, parent,false);
+          if(position%2==0){
+              //row.setBackgroundColor(Color.GRAY);
+              LinearLayout linearLayout= row.findViewById(R.id.line1);
+              linearLayout.setBackgroundColor(Color.GRAY);
+          }
           final ShoppingItem s=(ShoppingItem) getItem(position);
           TextView text_name= row.findViewById(R.id.text_name_wishlist);
           text_name.setText(s.getName());
           TextView text_price=  row.findViewById(R.id.text_price_wishlist);
-          text_price.setText(s.getPrice()+"");
+          text_price.setText(s.getPrice()+"$");
           TextView text_quantity=  row.findViewById(R.id.text_quantity_wishlist);
-          text_quantity.setText(s.getQuantity()+"");
+          text_quantity.setText(s.getQuantity()+"X");
           TextView text_tag_wishlist=  row.findViewById(R.id.text_tag_wishlist);
           text_tag_wishlist.setText(s.getTag());
           ImageView imageView_wishlist=row.findViewById(R.id.image_wishlist_item);
