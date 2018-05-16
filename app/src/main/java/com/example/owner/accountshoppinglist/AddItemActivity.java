@@ -92,7 +92,42 @@ public class AddItemActivity extends AppCompatActivity {
         button_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(mName.getText().toString().length()==0
+                        ){
+                    mName.setError("name field needs to be filled");
+                }else if(mPrice.getText().toString().length()==0){
+                    mPrice.setError("price field needs to be filled");
+                }else if(mQuantity.getText().toString().length()==0){
+                    mQuantity.setError("quantity needs to be filled");
+                }
+                else{
+                    AlertDialog.Builder builder=new AlertDialog.Builder(AddItemActivity.this);
+                    builder.setTitle("Add new Item");
+                    builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            ShoppingItem p=new ShoppingItem();
+                            p.setName(mName.getText().toString());
+                            p.setTag(tag);
+                            p.setPath(mCurrentPhotoPath);
+                            p.setPrice(Integer.parseInt(mPrice.getText().toString()) );
+                            p.setQuantity(Integer.parseInt(mQuantity.getText().toString()));
+                            DatabaseUtility.insert(db,p);
+                            Toast.makeText(AddItemActivity.this,"create success",Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(AddItemActivity.this,MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    AlertDialog dialog=builder.create();
+                    dialog.show();
+                }
+                /*
                 AlertDialog.Builder builder=new AlertDialog.Builder(AddItemActivity.this);
                 builder.setTitle("Add new Item");
                 builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -118,6 +153,7 @@ public class AddItemActivity extends AppCompatActivity {
                 });
                 AlertDialog dialog=builder.create();
                 dialog.show();
+                */
                 /*
                 ShoppingItem p=new ShoppingItem();
                 p.setName(mName.getText().toString());
