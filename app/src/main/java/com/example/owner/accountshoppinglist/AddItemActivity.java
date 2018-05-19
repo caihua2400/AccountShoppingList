@@ -46,7 +46,7 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item);
+        setContentView(R.layout.activity_add_item_new);
         ShoppingItemDatabase dbConnection = new ShoppingItemDatabase(this);
         db = dbConnection.openDatabase();
         nameList=DatabaseUtility.selectAllName(db);
