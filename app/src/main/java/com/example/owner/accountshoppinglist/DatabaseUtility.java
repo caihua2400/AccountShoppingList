@@ -3,6 +3,7 @@ package com.example.owner.accountshoppinglist;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,15 @@ public class DatabaseUtility {
     public static final String TABLE_NAME_BOUGHT="shoppingItem_bought";
     public static final String KEY_ITEM_PHOTO_PATH="item_path";
     public static final String KEY_TAG="tag";
+    public static final String TABLE_NAME_NAMELIST="namelist";
+
+    public static final String CREATE_STATEMENT_NAMELIST="CREATE TABLE"
+            +" "
+            +TABLE_NAME_NAMELIST
+            +" ("+KEY_SHOPPINGITEM_ID+" integer primary key autoincrement, "
+            +KEY_NAME+" string not null "
+            +");";
+
     public static final String CREATE_STATEMENT="CREATE TABLE"
             +" "
             +TABLE_NAME
@@ -58,6 +68,26 @@ public class DatabaseUtility {
         values.put(KEY_TAG,s.getTag());
         db.insert(TABLE_NAME_BOUGHT,null,values);
     }
+
+    public static void insert_nameList(SQLiteDatabase db,String name){
+        boolean flag=false;
+        ArrayList<String> nameList=selectAllName(db);
+        for (String thisName: nameList
+             ) {
+            if(thisName==name){
+                flag=true;
+                Log.d("insert_nameList",flag+"");
+                break;
+            }
+
+        }
+        if(flag==false) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_NAME, name);
+            db.insert(TABLE_NAME_NAMELIST, null, values);
+        }
+    }
+
     public static void update(SQLiteDatabase db,ShoppingItem s){
         ContentValues values=new ContentValues();
         values.put(KEY_NAME,s.getName());
@@ -77,11 +107,11 @@ public class DatabaseUtility {
     }
     public static ArrayList<String> selectAllName(SQLiteDatabase db){
         ArrayList<String> result=new ArrayList<>();
-        Cursor c= db.query(TABLE_NAME,null,null,null,null,null,null);
+        Cursor c= db.query(TABLE_NAME_NAMELIST,null,null,null,null,null,null);
         if(c!=null){
             c.moveToNext();
             while(!c.isAfterLast()){
-                String p=createFromCursor(c).getName();
+                String p=c.getString(c.getColumnIndex(KEY_NAME));
                 result.add(p);
                 c.moveToNext();
             }

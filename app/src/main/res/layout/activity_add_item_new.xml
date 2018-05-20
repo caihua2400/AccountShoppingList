@@ -31,7 +31,8 @@
         <EditText android:layout_column="1"
             android:layout_height="match_parent"
             android:layout_width="250dp"
-            android:id="@+id/mPrice"/>
+            android:id="@+id/mPrice"
+            android:inputType="number"/>
     </TableRow>
 
     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1">
@@ -45,7 +46,8 @@
         <EditText android:layout_column="1"
             android:layout_height="match_parent"
             android:layout_width="250dp"
-            android:id="@+id/mQuantity"/>
+            android:id="@+id/mQuantity"
+            android:inputType="number"/>
     </TableRow>
 
     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1">
@@ -90,7 +92,7 @@
             android:layout_column="0"
             android:gravity="right"
             android:layout_weight="1"/>
-        <ListView android:id="@+id/name_list" android:layout_height="165dp" android:layout_column="1"
+        <ListView android:id="@+id/name_list" android:layout_height="75dp" android:layout_column="1"
             android:layout_width="wrap_content"
             android:layout_weight="1"/>
 

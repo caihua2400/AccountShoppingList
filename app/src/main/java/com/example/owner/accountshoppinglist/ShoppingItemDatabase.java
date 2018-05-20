@@ -15,7 +15,7 @@ public class ShoppingItemDatabase {
     //name of the database
     private static final String DATABASE_NAME="ShoppingItemDatabase";
     //database version increment it every time you upgrade your database
-    private static final int DATABASE_VERSION=1;
+    private static final int DATABASE_VERSION=2;
     //connection to the database
     private SQLiteDatabase mDb;
     private DatabaseHelper mDbHelper;
@@ -46,6 +46,7 @@ public class ShoppingItemDatabase {
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
             sqLiteDatabase.execSQL(DatabaseUtility.CREATE_STATEMENT);
             sqLiteDatabase.execSQL(DatabaseUtility.CREATE_STATEMENT_BOUGHT);
+            sqLiteDatabase.execSQL(DatabaseUtility.CREATE_STATEMENT_NAMELIST);
             Log.d(TAG,"database created");
         }
 
@@ -53,6 +54,7 @@ public class ShoppingItemDatabase {
         public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DatabaseUtility.TABLE_NAME);
             sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " +DatabaseUtility.TABLE_NAME_BOUGHT);
+            sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " +DatabaseUtility.TABLE_NAME_NAMELIST);
             onCreate(sqLiteDatabase);
             Log.d(TAG,"sqlight upgraded");
         }

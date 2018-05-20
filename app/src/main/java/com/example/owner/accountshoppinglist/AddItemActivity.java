@@ -119,6 +119,7 @@ public class AddItemActivity extends AppCompatActivity {
                             p.setPrice(Integer.parseInt(mPrice.getText().toString()) );
                             p.setQuantity(Integer.parseInt(mQuantity.getText().toString()));
                             DatabaseUtility.insert(db,p);
+                            DatabaseUtility.insert_nameList(db,p.getName());
                             Toast.makeText(AddItemActivity.this,"create success",Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(AddItemActivity.this,MainActivity.class);
                             startActivity(intent);
