@@ -3,6 +3,7 @@ package com.example.owner.accountshoppinglist;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,7 +37,7 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
         this.context=context;
         this.mLayoutResourceId=resource;
         mFilterList=new ArrayList<ShoppingItem>(shoppingItemArrayList);
-        boughtList=new ArrayList<>(shoppingItemArrayList);
+        boughtList=shoppingItemArrayList;
         this.databaseHandler=databaseHandler;
 
 
@@ -77,6 +78,7 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
         button_delete_bought.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 AlertDialog.Builder builder=new AlertDialog.Builder(context);
                 builder.setTitle("delete bought item");
                 builder.setNegativeButton("cancel delete", new DialogInterface.OnClickListener() {
@@ -97,13 +99,13 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
                 });
                 AlertDialog dialog=builder.create();
                 dialog.show();
-                /*
+                */
                 DatabaseUtility.delete_bought(databaseHandler,shoppingItem);
                 remove(shoppingItem);
                 notifyDataSetChanged();
 
                 Toast.makeText(context,"delete successful",Toast.LENGTH_SHORT).show();
-                */
+
             }
         });
 

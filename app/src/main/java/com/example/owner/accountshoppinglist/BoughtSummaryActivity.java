@@ -31,6 +31,9 @@ public class BoughtSummaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bought_summary);
         mReceiver=new mBroadcastReceiver();
+        IntentFilter intentFilter=new IntentFilter();
+        intentFilter.addAction("update");
+        registerReceiver(mReceiver,intentFilter);
         ShoppingItemDatabase dbConnection=new ShoppingItemDatabase(BoughtSummaryActivity.this);
         db= dbConnection.openDatabase();
         boughtList=DatabaseUtility.selectAll_bought(db);
@@ -50,6 +53,7 @@ public class BoughtSummaryActivity extends AppCompatActivity {
         CalculateTotalPrice(boughtList);
         boughtSummaryListAdapter =
                 new BoughtSummaryListAdapter(BoughtSummaryActivity.this,R.layout.bought_item,boughtList,db);
+
         bought_list_view.setAdapter(boughtSummaryListAdapter);
         boughtSummaryListAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -139,7 +143,7 @@ public class BoughtSummaryActivity extends AppCompatActivity {
 
 
     }
-    public class mBroadcastReceiver extends BroadcastReceiver{
+    private class mBroadcastReceiver extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -148,6 +152,9 @@ public class BoughtSummaryActivity extends AppCompatActivity {
                     ) {
                 totalPrice+=s.getPrice();
                 edit_total_price.setText(totalPrice+"");
+            }
+            if(boughtSummaryListAdapter.boughtList.size()==0){
+                edit_total_price.setText(0+"");
             }
             Log.d("onReceive","updated");
         }

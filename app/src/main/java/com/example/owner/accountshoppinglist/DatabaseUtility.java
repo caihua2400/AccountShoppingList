@@ -36,7 +36,7 @@ public class DatabaseUtility {
             + KEY_NAME + " string not null, "
             + KEY_PRICE + " int not null, "
             + KEY_QUANTITY + " integer not null, "
-            + KEY_ITEM_PHOTO_PATH+ " string not null, "
+            + KEY_ITEM_PHOTO_PATH+ " string , "
             + KEY_TAG+ " string not null"
             +");";
     public static final String CREATE_STATEMENT_BOUGHT="CREATE TABLE"
@@ -46,7 +46,7 @@ public class DatabaseUtility {
             + KEY_NAME + " string not null, "
             + KEY_PRICE + " int not null, "
             + KEY_QUANTITY + " integer not null, "
-            + KEY_ITEM_PHOTO_PATH+ " string not null, "
+            + KEY_ITEM_PHOTO_PATH+ " string , "
             + KEY_TAG+" string not null"
             +");";
 

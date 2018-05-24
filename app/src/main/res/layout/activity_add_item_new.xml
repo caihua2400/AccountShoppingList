@@ -56,6 +56,7 @@
             android:layout_height="match_parent"
             android:layout_column="0"
             android:gravity="right"
+            android:background="@drawable/rounded_button"
             android:id="@+id/button_take_photo"/>
         <ImageView android:layout_column="1" android:layout_height="75dp" android:layout_width="125dp"
             android:id="@+id/myImageView"
@@ -99,8 +100,10 @@
     </TableRow>
 
     <TableRow android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1">
-<Button android:text="create" android:layout_column="0" android:id="@+id/button_create"/>
-        <Button android:text="Cancel" android:layout_column="1" android:id="@+id/button_cancel_add"/>
+<Button android:text="create" android:layout_column="0" android:id="@+id/button_create"
+    android:background="@drawable/rounded_button"/>
+        <Button android:text="Cancel" android:layout_column="1" android:id="@+id/button_cancel_add"
+            android:background="@drawable/rounded_button"/>
 
     </TableRow>
 </TableLayout>
