@@ -54,7 +54,9 @@ public class AddItemActivity extends AppCompatActivity {
         final EditText mName = findViewById(R.id.mName);
         final EditText mPrice = findViewById(R.id.mPrice);
         final EditText mQuantity = findViewById(R.id.mQuantity);
+        Button button_reset=findViewById(R.id.button_cancel_add);
         Button button_create = findViewById(R.id.button_create);
+        Button button_back_to_shoppingList=findViewById(R.id.button_turn_to_shoppingList);
         final ListView name_list_view=findViewById(R.id.name_list);
         final SearchView name_search=findViewById(R.id.searchView_nameList);
         final Spinner spinner_tag=findViewById(R.id.spinner_tag);
@@ -86,6 +88,21 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 requestToTakeAPicture();
+            }
+        });
+        button_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mName.setText("");
+                mPrice.setText("");
+                mQuantity.setText("");
+            }
+        });
+        button_back_to_shoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(AddItemActivity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
 

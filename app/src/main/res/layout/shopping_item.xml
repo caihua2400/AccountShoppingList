@@ -54,6 +54,7 @@
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:text="buy"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/button_delete"
@@ -62,6 +63,7 @@
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:text="delete"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/button_modify"
@@ -70,6 +72,7 @@
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:text="update"
+                android:background="@drawable/rounded_button"
                 android:layout_weight="1"/>
 
         </LinearLayout>
