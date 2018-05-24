@@ -139,7 +139,7 @@ public class BoughtSummaryActivity extends AppCompatActivity {
 
 
     }
-    private class mBroadcastReceiver extends BroadcastReceiver{
+    public class mBroadcastReceiver extends BroadcastReceiver{
 
         @Override
         public void onReceive(Context context, Intent intent) {
