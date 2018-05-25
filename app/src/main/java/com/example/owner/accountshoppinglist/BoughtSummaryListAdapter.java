@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,8 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
                 AlertDialog dialog=builder.create();
                 dialog.show();
                 */
+                Log.d("TAG", "delete: "+shoppingItem.getId());
+
                 DatabaseUtility.delete_bought(databaseHandler,shoppingItem);
                 remove(shoppingItem);
                 notifyDataSetChanged();
@@ -140,6 +143,7 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
     }
     private void remove(ShoppingItem shoppingItem){
         boughtList.remove(shoppingItem);
+        if (mFilterList != null) mFilterList.remove(shoppingItem);
     }
 
     @Override
@@ -158,13 +162,14 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
                 ArrayList<ShoppingItem> filterList=new ArrayList<ShoppingItem>();
                 for(int i=0;i<mFilterList.size();i++){
                     if(mFilterList.get(i).getTag().contains(constraint.toString())){
-                        ShoppingItem s=new ShoppingItem();
+                        /*ShoppingItem s=new ShoppingItem();
                         s.setName(mFilterList.get(i).getName());
                         s.setQuantity(mFilterList.get(i).getQuantity());
                         s.setPrice(mFilterList.get(i).getPrice());
                         s.setPath(mFilterList.get(i).getPath());
                         s.setTag(mFilterList.get(i).getTag());
-                        filterList.add(s);
+                        filterList.add(s);*/
+                        filterList.add(mFilterList.get(i));
                     }
                 }
                 results.count=filterList.size();
@@ -178,7 +183,12 @@ public class BoughtSummaryListAdapter extends BaseAdapter implements Filterable 
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            //mFilterList=boughtList;
                 boughtList=(ArrayList<ShoppingItem>) filterResults.values;
+                for (ShoppingItem item : boughtList)
+                {
+                    Log.d("TAG", "item="+item.getId());
+                }
                 notifyDataSetChanged();
         }
     }

@@ -203,6 +203,7 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
     }
     private void remove(ShoppingItem shoppingItem){
         wishList.remove(shoppingItem);
+        if (mFilterList != null) mFilterList.remove(shoppingItem);
     }
     @NonNull
     @Override
@@ -221,13 +222,17 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
                 ArrayList<ShoppingItem> filterList=new ArrayList<ShoppingItem>();
                 for(int i=0;i<mFilterList.size();i++){
                     if(mFilterList.get(i).getTag().contains(constraint.toString())){
+                        /*
                         ShoppingItem s=new ShoppingItem();
                         s.setName(mFilterList.get(i).getName());
                         s.setQuantity(mFilterList.get(i).getQuantity());
                         s.setPrice(mFilterList.get(i).getPrice());
                         s.setPath(mFilterList.get(i).getPath());
                         s.setTag(mFilterList.get(i).getTag());
-                        filterList.add(s);
+                        */
+
+
+                        filterList.add(mFilterList.get(i));
                     }
                 }
                 results.count=filterList.size();
