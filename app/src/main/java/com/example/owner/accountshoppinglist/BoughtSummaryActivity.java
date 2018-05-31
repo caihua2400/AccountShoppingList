@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.DataSetObserver;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,9 +36,15 @@ public class BoughtSummaryActivity extends AppCompatActivity {
         IntentFilter intentFilter=new IntentFilter();
         intentFilter.addAction("update");
         registerReceiver(mReceiver,intentFilter);
-        ShoppingItemDatabase dbConnection=new ShoppingItemDatabase(BoughtSummaryActivity.this);
+        try{
+            boughtList=new queryDatabaseTask(BoughtSummaryActivity.this).execute().get();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        /*ShoppingItemDatabase dbConnection=new ShoppingItemDatabase(BoughtSummaryActivity.this);
         db= dbConnection.openDatabase();
-        boughtList=DatabaseUtility.selectAll_bought(db);
+        boughtList=DatabaseUtility.selectAll_bought(db);*/
 
         final ListView bought_list_view=findViewById(R.id.list_view_bought);
         edit_total_price=findViewById(R.id.editText_total_price);
@@ -151,11 +159,12 @@ public class BoughtSummaryActivity extends AppCompatActivity {
             for (ShoppingItem s: boughtSummaryListAdapter.boughtList
                     ) {
                 totalPrice+=s.getPrice();
-                edit_total_price.setText(totalPrice+"");
             }
-            if(boughtSummaryListAdapter.boughtList.size()==0){
+            edit_total_price.setText(totalPrice+"");
+
+            /*if(boughtSummaryListAdapter.boughtList.size()==0){
                 edit_total_price.setText(0+"");
-            }
+            }*/
             Log.d("onReceive","updated");
         }
     }
@@ -175,5 +184,25 @@ public class BoughtSummaryActivity extends AppCompatActivity {
         super.onPause();
         unregisterReceiver(mReceiver);
         Log.d("onPause","received");
+    }
+    private class queryDatabaseTask extends AsyncTask<Void,Void,ArrayList<ShoppingItem>> {
+        private Context context;
+
+        public queryDatabaseTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected ArrayList<ShoppingItem> doInBackground(Void... voids) {
+            ShoppingItemDatabase dbConnection=new ShoppingItemDatabase(context);
+            db=dbConnection.openDatabase();
+            ArrayList<ShoppingItem> shoppingItems=DatabaseUtility.selectAll_bought(db);
+            return shoppingItems;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ShoppingItem> shoppingItems) {
+            Toast.makeText(context,"query completed",Toast.LENGTH_SHORT).show();
+        }
     }
 }
