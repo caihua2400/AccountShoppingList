@@ -69,32 +69,43 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
+            View row;
           LayoutInflater  inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder viewHolder;
+          if(convertView==null){
+              row= inflater.inflate(mLayoutResourceId, parent,false);
+               viewHolder=new ViewHolder();
+              viewHolder.text_name=row.findViewById(R.id.text_name_wishlist);
+              viewHolder.text_price=row.findViewById(R.id.text_price_wishlist);
+              viewHolder.text_quantity=row.findViewById(R.id.text_quantity_wishlist);
+              viewHolder.text_tag=row.findViewById(R.id.text_tag_wishlist);
+              viewHolder.image_photo=row.findViewById(R.id.image_wishlist_item);
+              viewHolder.button_delete=row.findViewById(R.id.button_delete);
+              viewHolder.button_modify=row.findViewById(R.id.button_modify);
+              viewHolder.button_purchase=row.findViewById(R.id.button_purchase);
+              row.setTag(viewHolder);
 
-
-          View row= inflater.inflate(mLayoutResourceId, parent,false);
-          if(position%2==0){
-              //row.setBackgroundColor(Color.GRAY);
-              LinearLayout linearLayout= row.findViewById(R.id.line1);
-              linearLayout.setBackgroundColor(Color.GRAY);
+          }else{
+              row=convertView;
+              viewHolder=(ViewHolder) row.getTag();
           }
+
           final ShoppingItem s=(ShoppingItem) getItem(position);
-          TextView text_name= row.findViewById(R.id.text_name_wishlist);
-          text_name.setText(s.getName());
-          TextView text_price=  row.findViewById(R.id.text_price_wishlist);
-          text_price.setText(s.getPrice()+"$");
-          TextView text_quantity=  row.findViewById(R.id.text_quantity_wishlist);
-          text_quantity.setText(s.getQuantity()+"X");
-          TextView text_tag_wishlist=  row.findViewById(R.id.text_tag_wishlist);
-          text_tag_wishlist.setText(s.getTag());
-          ImageView imageView_wishlist=row.findViewById(R.id.image_wishlist_item);
+          //TextView text_name= row.findViewById(R.id.text_name_wishlist);
+          viewHolder.text_name.setText(s.getName());
+          //TextView text_price=  row.findViewById(R.id.text_price_wishlist);
+          viewHolder.text_price.setText(s.getPrice()+"$");
+          //TextView text_quantity=  row.findViewById(R.id.text_quantity_wishlist);
+          viewHolder.text_quantity.setText(s.getQuantity()+"X");
+          //TextView text_tag_wishlist=  row.findViewById(R.id.text_tag_wishlist);
+          viewHolder.text_tag.setText(s.getTag());
+          //ImageView imageView_wishlist=row.findViewById(R.id.image_wishlist_item);
 
-          setPic(imageView_wishlist,s.getPath());
+          setPic(viewHolder.image_photo,s.getPath());
 
-          Button button_delete=row.findViewById(R.id.button_delete);
+          //Button button_delete=row.findViewById(R.id.button_delete);
 
-          button_delete.setOnClickListener(new View.OnClickListener() {
+          viewHolder.button_delete.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                     AlertDialog.Builder builder=new AlertDialog.Builder(context);
@@ -125,8 +136,8 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
               }
           });
 
-          Button button_modify=row.findViewById(R.id.button_modify);
-          button_modify.setOnClickListener(new View.OnClickListener() {
+          //Button button_modify=row.findViewById(R.id.button_modify);
+          viewHolder.button_modify.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                   Intent intent=new Intent(context,ModifyItemActivity.class);
@@ -136,8 +147,8 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
               }
           });
 
-          Button button_purchase=row.findViewById(R.id.button_purchase);
-          button_purchase.setOnClickListener(new View.OnClickListener() {
+          //Button button_purchase=row.findViewById(R.id.button_purchase);
+          viewHolder.button_purchase.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View view) {
                   AlertDialog.Builder builder=new AlertDialog.Builder(context);
@@ -249,5 +260,16 @@ public class MainListAdapter extends BaseAdapter implements Filterable{
                 wishList=(ArrayList<ShoppingItem>) filterResults.values;
                 notifyDataSetChanged();
         }
+    }
+    private class ViewHolder{
+        private TextView text_name;
+        private TextView text_price;
+        private TextView text_quantity;
+        private TextView text_tag;
+        private ImageView image_photo;
+        private Button button_delete;
+        private Button button_purchase;
+        private Button button_modify;
+
     }
 }

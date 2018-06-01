@@ -19,11 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".AddItemActivity" />
         <activity android:name=".BoughtSummaryActivity" />
@@ -39,8 +35,17 @@
         </provider>
 
         <activity android:name=".ModifyItemActivity" />
-        <activity android:name=".StatisticsActivity"></activity>
-        <receiver android:name=".BoughtSummaryActivity$mBroadcastReceiver"></receiver>
+        <activity android:name=".StatisticsActivity" />
+
+        <receiver android:name=".BoughtSummaryActivity$mBroadcastReceiver" />
+
+        <activity android:name=".GuideActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
