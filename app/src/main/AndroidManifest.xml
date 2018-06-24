@@ -26,7 +26,11 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".AddItemActivity" />
         <activity android:name=".BoughtSummaryActivity" />
+        <provider
+            android:authorities="com.example.owner.accountshoppinglist.NamesContentProvider"
+            android:name="NamesContentProvider">
 
+        </provider>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.owner.accountshoppinglist"

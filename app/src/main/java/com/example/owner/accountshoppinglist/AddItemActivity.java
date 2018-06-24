@@ -1,9 +1,11 @@
 package com.example.owner.accountshoppinglist;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.owner.accountshoppinglist.DatabaseUtility.KEY_NAME;
+
 public class AddItemActivity extends AppCompatActivity {
     public static SQLiteDatabase db;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -49,7 +53,22 @@ public class AddItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_item_new);
         ShoppingItemDatabase dbConnection = new ShoppingItemDatabase(this);
         db = dbConnection.openDatabase();
-        nameList=DatabaseUtility.selectAllName(db);
+
+        ContentResolver contentResolver=getContentResolver();
+        Uri uri=Uri.parse("content://com.example.owner.accountshoppinglist.NamesContentProvider/names");
+        Cursor c=contentResolver.query(uri,null,null,null,null);
+        nameList=new ArrayList<String>();
+        if(c!=null){
+            c.moveToNext();
+            while(!c.isAfterLast()){
+                String p=c.getString(c.getColumnIndex(KEY_NAME));
+                nameList.add(p);
+                c.moveToNext();
+            }
+        }
+
+
+        //nameList=DatabaseUtility.selectAllName(db);
         findNameList=new ArrayList<String>();
         final EditText mName = findViewById(R.id.mName);
         final EditText mPrice = findViewById(R.id.mPrice);
